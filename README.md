@@ -14,7 +14,7 @@ Full coverage of Orca's translatable UI catalog:
 
 Orca discovers language packs through its plugin system. Two ways to install:
 
-- **From git:** Settings → Plugins → Install → Git, point Orca at `https://github.com/shutovks/orca-russian.git`
+- **From git:** Settings → Plugins → Install → Git, point Orca at `https://github.com/SkS-Other/orca-russian.git`
 - **From a local checkout:** Settings → Plugins → Development, add the folder path
 
 Then select **Русский — orca-russian** from Settings → Appearance → Language.
