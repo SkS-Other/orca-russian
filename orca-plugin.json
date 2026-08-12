@@ -1,11 +1,11 @@
 {
   "manifestVersion": 1,
   "id": "orca-russian",
-  "publisher": "shutovks",
+  "publisher": "SkS-Other",
   "name": "Русский",
   "version": "1.0.0",
   "description": "Russian (ru) language pack for the Orca UI. Untranslated keys fall back to English.",
-  "repository": "https://github.com/shutovks/orca-russian",
+  "repository": "https://github.com/SkS-Other/orca-russian",
   "engines": { "orca": ">=1.4.0" },
   "pluginApi": 1,
   "contributes": {
