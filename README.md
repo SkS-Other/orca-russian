@@ -6,7 +6,7 @@ Russian (ru) language pack for [Orca](https://github.com/stablyai/orca).
 
 Full coverage of Orca's translatable UI catalog:
 
-- **11,598 / 11,600** translatable strings shipped (99.98%)
+- **11,650 / 11,652** translatable strings shipped (99.98%), synced with Orca **v1.4.188**
 - Settings, sidebars (source control, checks, ports, file explorer, search, Git history, AI vault), editor (rich Markdown, diff, notebooks, PDF, images), terminal, browser pane, mobile companion app, onboarding, feature wall, automations, dashboard, emulator pane, crash reporting, and application menu
 - 2 remaining strings are inline CSS for animated marketing visuals (not prose) and are intentionally dropped — they fall back to the identical English-source CSS, with no user-facing impact
 

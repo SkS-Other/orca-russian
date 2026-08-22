@@ -1,0 +1,10 @@
+{
+  "auto.hooks.useSettingsNavigationMetadata.ab4b21b58e": "Nombres de rama, refs base y Git AI Author.",
+  "auto.components.PullRequestPage.filesRetry": "Reintentar",
+  "auto.components.terminal.quick.commands.TerminalQuickCommandDialog.ed04233b3e": "Los elementos guardados aparecen en el menú de la barra de pestañas para ejecutarlos con un clic.",
+  "auto.components.status.bar.ResourceUsageStatusSegment.92924a14e3": "Limpiar espacios de trabajo",
+  "auto.components.sidebar.WorktreeVisibilityDialog.f1f71b9f02": "Mostrar siempre",
+  "auto.components.sidebar.WorktreeVisibilityDialog.25ddf19920": "{{value0}} oculto actualmente",
+  "auto.components.settings.RepositoryPane.nestedHostLabel": "{{value0}} mediante {{value1}}",
+  "auto.components.settings.Settings.cfa34f4465": "Nombres de rama, refs base y Git AI Author."
+}
