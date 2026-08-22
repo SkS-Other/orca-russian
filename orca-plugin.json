@@ -3,7 +3,7 @@
   "id": "orca-russian",
   "publisher": "sks-other",
   "name": "Русский",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Russian (ru) language pack for the Orca UI. Untranslated keys fall back to English.",
   "repository": "https://github.com/SkS-Other/orca-russian",
   "engines": { "orca": ">=1.4.0" },
