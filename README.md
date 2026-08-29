@@ -1,60 +1,99 @@
-# orca-russian
+# Русский языковой пакет для Orca
 
-Russian (ru) language pack for [Orca](https://github.com/stablyai/orca).
+> 🌍 **English version** → [README.en.md](README.en.md)
 
-## Status
+Русская локализация интерфейса [Orca](https://github.com/stablyai/orca). Непереведённые строки автоматически откатываются к английскому оригиналу.
 
-Full coverage of Orca's translatable UI catalog:
+## Состояние перевода
 
-- **11,673 / 11,675** translatable strings shipped (99.99%), synced with Orca **v1.4.190**
-- Settings, sidebars (source control, checks, ports, file explorer, search, Git history, AI vault), editor (rich Markdown, diff, notebooks, PDF, images), terminal, browser pane, mobile companion app, onboarding, feature wall, automations, dashboard, emulator pane, crash reporting, and application menu
-- 2 remaining strings are inline CSS for animated marketing visuals (not prose) and are intentionally dropped — they fall back to the identical English-source CSS, with no user-facing impact
+Полное покрытие каталога переводимых строк Orca:
 
-## Installation
+- **11 673 из 11 675** строк (99,99 %), синхронизировано с Orca **v1.4.190**
+- Настройки, боковые панели (контроль исходников, проверки, порты, файловый проводник, поиск, история Git, AI-хранилище), редактор (Markdown, diff, ноутбуки, PDF, изображения), терминал, браузер-панель, мобильный компаньон, онбординг, автоматизации, дашборд, меню приложения и т. д.
+- 2 оставшиеся строки — инлайн-CSS анимированных маркетинговых иллюстраций (это не текст); они сознательно отброшены и откатываются к идентичному английскому CSS без каких-либо видимых последствий
 
-Orca discovers language packs through its plugin system. Two ways to install:
+## Установка
 
-- **From git:** Settings → Plugins → Install → Git URL, paste
-  `https://github.com/SkS-Other/orca-russian.git#main`
-  (the `#ref` is required by Orca so the install is pinned; `#main` always has the latest release, version tags are cut per Orca release)
-- **From a local checkout:** Settings → Plugins → Install → Local folder, add this repo's path
+### Способ 1 — из Git (рекомендуется)
 
-Then select **Русский** in Settings → Appearance → Language.
+1. Откройте **Settings → Plugins** и нажмите **Install plugin**.
+2. Переключитесь на вкладку **Git URL**.
+3. Вставьте ссылку:
 
-> **Note:** the plugin id is `ru-language-pack` (not `orca-*`). Orca reserves plugin ids
-> starting with `orca-` for its own bundled plugins, and refuses to install such ids from
-> third-party git sources or local folders.
+   ```
+   https://github.com/SkS-Other/orca-russian.git#main
+   ```
 
-## How this pack was built
+   Часть после `#` — обязательный «пин» (тег или коммит): Orca скачивает именно эту ревизию. `#main` всегда указывает на последний релиз; версионные теги `vX.Y.Z` выпускаются под конкретные версии Orca.
 
-The Spanish source catalog (`es.json`) was used as the skeleton, and Russian translations were authored in batches grouped by UI namespace, with an LLM-assisted, multi-pass process:
+4. Нажмите **Install**. Orca скачает плагин и покажет запрашиваемые права на проверку. У языкового пакета прав нет — только файл перевода. Нажмите **Enable plugin**.
+5. Убедитесь, что плагин включён в списке на странице **Plugins**.
 
-1.  Flatten the Spanish catalog into `path -> string` pairs, excluding keys under the plugin-protected namespace (`auto.components.settings.plugin*`, enforced by Orca's own plugin artifact parser) — except a small allowlist of plugin-chrome strings that are safe to translate.
-2.  Translate in batches grouped by component/namespace, with a shared style guide: placeholders (`{{value0}}`, `{{count}}`, etc.) preserved verbatim; brand and technical loanwords (`branch`, `commit`, `worktree`, `workspace`, `pull request`, `merge`, `rebase`, `diff`, `check`, `workflow`, etc.) kept untranslated, consistent with how GitHub/GitLab/VS Code are localized for ru.
-3.  Cross-batch consistency pass: reconciled terminology that drifted between independently translated batches (e.g. "Проверки" vs "Контроль" for the checks tab; "Рабочее пространство" vs "Пространство" for workspace).
-4.  Validated against the same rules Orca's plugin loader enforces at runtime (`parsePluginLanguagePackArtifact`): max 20,000 entries, max depth 16, no dangerous/unsafe keys, no protected paths, no string over 8,192 chars. The two inline-CSS blobs that exceed the 8,192-char limit are dropped (see [Status](#status)).
+### Способ 2 — из локальной папки
 
-## Repo layout
+1. Склонируйте репозиторий:
+
+   ```sh
+   git clone https://github.com/SkS-Other/orca-russian.git
+   ```
+
+2. Откройте **Settings → Plugins → Install plugin**, вкладка **Local folder**.
+3. Укажите путь к папке репозитория (например, `/Users/you/projects/orca-russian`) и нажмите **Install**.
+4. Нажмите **Enable plugin**.
+
+### Включение русского языка
+
+1. Откройте **Settings → Appearance**.
+2. В списке **Language** выберите **Русский**.
+
+Готово — интерфейс переключится на русский.
+
+### Обновление перевода
+
+Когда выходит новая версия (тег `vX.Y.Z` под соответствующую версию Orca), установите плагин ещё раз с актуальным ref, например:
+
+```
+https://github.com/SkS-Other/orca-russian.git#v1.4.192
+```
+
+Orca хранит версии плагина параллельно, поэтому повторная установка безопасна.
+
+> **Почему id плагина — `ru-language-pack`, а не `orca-russian`?**
+> Orca резервирует id плагинов с префиксом `orca-` за своими официальными пакетами и
+> отклоняет установку таких id из сторонних Git-источников и локальных папок
+> («reserved plugin identity …»). Поэтому репозиторий называется `orca-russian`,
+> а id плагина — `ru-language-pack`.
+
+## Как собирался перевод
+
+За скелет был взят испанский каталог (`es.json`), поверх которого авторский перевод выполнялся пачками по namespace'ам UI с помощью LLM в несколько проходов:
+
+1. Каталог испанского языка разворачивался в пары `путь -> строка`, исключая ключи защищённого namespace'а плагинов (`auto.components.settings.plugin*`, который резервируется парсером артефактов самого Orca) — кроме небольшого white-list'а строк плагинного интерфейса, которые безопасно переводить.
+2. Перевод выполнялся пачками по компонентам/namespace'ам с единым стайлгайдом: плейсхолдеры (`{{value0}}`, `{{count}}` и т. п.) сохраняются дословно; бренды и устоявшиеся технические заимствования (`branch`, `commit`, `worktree`, `workspace`, `pull request`, `merge`, `rebase`, `diff`, `check`, `workflow` и т. д.) не переводятся — так же, как это принято в локализациях GitHub/GitLab/VS Code.
+3. Сквозной проход на согласованность: сводилась терминология, «поплывшая» между независимыми пачками (например, «Проверки» vs «Контроль» для вкладки checks; «Рабочее пространство» vs «Пространство» для workspace).
+4. Результат валидировался по тем же правилам, которые загрузчик плагинов Orca применяет в рантайме (`parsePluginLanguagePackArtifact`): максимум 20 000 записей, глубина не больше 16, нет опасных/недопустимых ключей, нет защищённых путей, нет строк длиннее 8 192 символов. Два инлайн-CSS блока, превышающих лимит 8 192 символа, отброшены (см. [Состояние перевода](#состояние-перевода)).
+
+## Структура репозитория
 
 ```
 orca-russian/
-├── orca-plugin.json        # plugin manifest
-├── locales/ru.json         # the shipped language pack (sparse catalog)
-└── tools/                  # authoring scaffolding (not shipped)
-    ├── _skeleton_es.json   # Spanish source catalog (path -> string)
-    ├── ru_overrides.json   # Russian translations (path -> string)
-    ├── _build.py           # builds locales/ru.json from skeleton + overrides
-    ├── _filter.py          # walks the skeleton, drops protected paths
-    ├── _next_batch.py      # prints the next N untranslated keys
-    └── _batch*.json        # per-batch translation snapshots (history)
+├── orca-plugin.json        # манифест плагина
+├── locales/ru.json         # сам языковой пакет (разреженный каталог)
+└── tools/                  # вспомогательные скрипты (в поставку не входят)
+    ├── _skeleton_es.json   # испанский каталог-источник (путь -> строка)
+    ├── ru_overrides.json   # русский перевод (путь -> строка)
+    ├── _build.py           # собирает locales/ru.json из скелета + оверрайдов
+    ├── _filter.py          # обходит скелет, отбрасывая защищённые пути
+    ├── _next_batch.py      # печатает очередные N непереведённых ключей
+    └── _batch*.json        # снапшоты переводческих пачек (история)
 ```
 
-Rebuild the pack after editing `ru_overrides.json`:
+Пересобрать пакет после правки `ru_overrides.json`:
 
 ```sh
 cd tools && python3 _build.py
 ```
 
-## Contributing
+## Участие в переводе
 
-Corrections and improvements welcome — please open a PR, keeping the existing key structure and the style conventions above. Edit `tools/ru_overrides.json`, then rebuild with `cd tools && python3 _build.py` and commit the regenerated `locales/ru.json`.
+Правки и улучшения приветствуются — открывайте PR, сохраняя существующую структуру ключей и стилевые соглашения выше. Редактируйте `tools/ru_overrides.json`, затем пересоберите `cd tools && python3 _build.py` и закоммитьте обновлённый `locales/ru.json`.
