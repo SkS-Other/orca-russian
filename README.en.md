@@ -8,8 +8,8 @@ Russian (ru) localization for the [Orca](https://github.com/stablyai/orca) UI. U
 
 Full coverage of Orca's translatable UI catalog:
 
-- **11,850 / 11,852** translatable strings shipped (99.98%), synced with Orca **v1.4.199**
-- Settings, sidebars (source control, checks, ports, file explorer, search, Git history, AI vault), editor (rich Markdown, diff, notebooks, PDF, images), terminal, browser pane, mobile companion app, onboarding, automations, dashboard, application menu, and more
+- **15,005 / 15,007** translatable strings shipped (99.99%), synced with Orca **v1.4.222**
+- Settings, sidebars (source control, checks, ports, file explorer, search, Git history, AI vault), editor (rich Markdown, diff, notebooks, PDF, images, CSV tables), terminal, browser pane, mobile companion app, onboarding, automations, skills, agent session search, native chat, dashboard, application menu, and more
 - 2 remaining strings are inline CSS for animated marketing visuals (not prose) and are intentionally dropped — they fall back to the identical English-source CSS, with no user-facing impact
 
 ## Installation
@@ -53,7 +53,7 @@ Done — the UI switches to Russian.
 When a new version ships (a `vX.Y.Z` tag matching the corresponding Orca release), reinstall the plugin with the up-to-date ref, for example:
 
 ```
-https://github.com/SkS-Other/orca-russian.git#v1.4.199
+https://github.com/SkS-Other/orca-russian.git#v1.4.222
 ```
 
 Orca keeps plugin versions side by side, so reinstalling is safe.
