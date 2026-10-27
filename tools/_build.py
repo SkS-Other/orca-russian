@@ -6,6 +6,7 @@ import _filter as f
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 SKELETON = os.path.join(HERE, "_skeleton_es.json")
+SKELETON_EN_EXTRA = os.path.join(HERE, "_skeleton_en_extra.json")
 OVERRIDES = os.path.join(HERE, "ru_overrides.json")
 OUT = os.path.join(HERE, "..", "locales", "ru.json")
 
@@ -23,6 +24,11 @@ def set_nested(root, dotted, value):
 def main():
     skel = json.load(open(SKELETON, encoding="utf-8"))
     kept = dict(f.walk(skel))  # path -> source value
+    try:
+        # English-only keys: present in the en catalog, not yet in es. Source is English.
+        kept.update(json.load(open(SKELETON_EN_EXTRA, encoding="utf-8")))
+    except FileNotFoundError:
+        pass
     overrides = {}
     try:
         overrides = json.load(open(OVERRIDES, encoding="utf-8"))
