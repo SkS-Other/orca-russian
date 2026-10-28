@@ -6,7 +6,7 @@ import _filter as f
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 SKELETON = os.path.join(HERE, "_skeleton_es.json")
-SKELETON_EN_EXTRA = os.path.join(HERE, "_skeleton_en_extra.json")
+SKELETON_EN = os.path.join(HERE, "_skeleton_en.json")
 OVERRIDES = os.path.join(HERE, "ru_overrides.json")
 OUT = os.path.join(HERE, "..", "locales", "ru.json")
 
@@ -25,8 +25,9 @@ def main():
     skel = json.load(open(SKELETON, encoding="utf-8"))
     kept = dict(f.walk(skel))  # path -> source value
     try:
-        # English-only keys: present in the en catalog, not yet in es. Source is English.
-        kept.update(json.load(open(SKELETON_EN_EXTRA, encoding="utf-8")))
+        # Keys the es catalog has not picked up yet: their source is English.
+        en = dict(f.walk(json.load(open(SKELETON_EN, encoding="utf-8"))))
+        kept.update({p: v for p, v in en.items() if p not in kept})
     except FileNotFoundError:
         pass
     overrides = {}

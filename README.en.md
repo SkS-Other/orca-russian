@@ -6,11 +6,12 @@ Russian (ru) localization for the [Orca](https://github.com/stablyai/orca) UI. U
 
 ## Status
 
-Full coverage of Orca's translatable UI catalog:
+Synced with Orca **v1.4.242**:
 
-- **17,007 / 17,007** translatable strings shipped (100%), synced with Orca **v1.4.242**
+- **16,112 translated strings** + **895 strings intentionally left in English** (brands, commands, code, language names) = all 17,007 catalog keys
 - Settings, sidebars (source control, checks, ports, file explorer, search, Git history, AI vault), editor (rich Markdown, diff, notebooks, PDF, images, CSV tables), terminal, browser pane, mobile companion app, onboarding, automations, skills, agent session search, native chat, dashboard, remote Orca servers and WSL hosts, Jira board, Space, application menu, and more
-- 165 strings that the Spanish source catalog has not translated yet are translated straight from the English original; no string falls back to English
+- 165 strings that the Spanish source catalog has not translated yet are translated straight from the English original
+- Entries identical to the English original are not shipped: Orca already falls back to English, and such an entry only burns the 20,000-entry limit (18,193 used right now)
 
 ## Installation
 
@@ -71,8 +72,9 @@ The Spanish source catalog (`es.json`) was used as the skeleton, and Russian tra
 1. Flatten the Spanish catalog into `path -> string` pairs, excluding keys under the plugin-protected namespace (`auto.components.settings.plugin*`, enforced by Orca's own plugin artifact parser) — except a small allowlist of plugin-chrome strings that are safe to translate.
 2. Translate in batches grouped by component/namespace, with a shared style guide: placeholders (`{{value0}}`, `{{count}}`, etc.) preserved verbatim; brand and technical loanwords (`branch`, `commit`, `worktree`, `workspace`, `pull request`, `merge`, `rebase`, `diff`, `check`, `workflow`, etc.) kept untranslated, consistent with how GitHub/GitLab/VS Code are localized for ru.
 3. Cross-batch consistency pass: reconciled terminology that drifted between independently translated batches (e.g. «Проверки» vs «Контроль» for the checks tab; «Рабочее пространство» vs «Пространство» for workspace).
-4. Keys that exist in the English catalog but have not reached the Spanish one yet are collected separately (`_skeleton_en_extra.json`) and translated straight from English.
-5. Validated against the same rules Orca's plugin loader enforces at runtime (`parsePluginLanguagePackArtifact`): max 20,000 entries, max depth 16, no dangerous/unsafe keys, no protected paths, no string over 8,192 chars.
+4. Keys that exist in the English catalog but have not reached the Spanish one yet are taken from `_skeleton_en.json` and translated straight from English.
+5. Entries identical to the English original are dropped from the pack (`_prune_filler.py`): they change nothing on screen but spend the entry limit. Their keys land in `_preserve_english.json` so later batches do not retranslate them.
+6. Validated against the same rules Orca's plugin loader enforces at runtime (`parsePluginLanguagePackArtifact`): max 20,000 entries, max depth 16, no dangerous/unsafe keys, no protected paths, no string over 8,192 chars.
 
 ## Repo layout
 
@@ -82,10 +84,12 @@ orca-russian/
 ├── locales/ru.json           # the shipped language pack (sparse catalog)
 └── tools/                    # authoring scaffolding (not shipped)
     ├── _skeleton_es.json     # Spanish source catalog (path -> string)
-    ├── _skeleton_en_extra.json # keys missing from es (English source)
+    ├── _skeleton_en.json     # English catalog: fallback and source for es gaps
     ├── ru_overrides.json     # Russian translations (path -> string)
+    ├── _preserve_english.json # keys intentionally kept in English
     ├── _build.py             # builds locales/ru.json from skeleton + overrides
     ├── _filter.py            # walks the skeleton, drops protected paths
+    ├── _prune_filler.py      # drops overrides identical to English
     ├── _next_batch.py        # prints the next N untranslated keys
     ├── _sync_1.4.242.py      # applies the 1.4.222 -> 1.4.242 catalog diff
     └── _batch*.json          # per-batch translation snapshots (history)
@@ -94,9 +98,9 @@ orca-russian/
 Rebuild the pack after editing `ru_overrides.json`:
 
 ```sh
-cd tools && python3 _build.py
+cd tools && python3 _prune_filler.py && python3 _build.py
 ```
 
 ## Contributing
 
-Corrections and improvements welcome — please open a PR, keeping the existing key structure and the style conventions above. Edit `tools/ru_overrides.json`, then rebuild with `cd tools && python3 _build.py` and commit the regenerated `locales/ru.json`.
+Corrections and improvements welcome — please open a PR, keeping the existing key structure and the style conventions above. Edit `tools/ru_overrides.json`, then rebuild with `cd tools && python3 _prune_filler.py && python3 _build.py` and commit the regenerated `locales/ru.json` and `_preserve_english.json`.

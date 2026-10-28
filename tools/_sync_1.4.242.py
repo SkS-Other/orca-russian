@@ -6,7 +6,7 @@ import json, os, re, sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 OV = os.path.join(HERE, "ru_overrides.json")
 SKELETON = os.path.join(HERE, "_skeleton_es.json")
-EN_EXTRA = os.path.join(HERE, "_skeleton_en_extra.json")
+SKELETON_EN = os.path.join(HERE, "_skeleton_en.json")
 BATCH_NEW = os.path.join(HERE, "_batch52_v1.4.242.json")
 BATCH_EN_ONLY = os.path.join(HERE, "_batch53_v1.4.242.json")
 
@@ -76,6 +76,50 @@ CHANGED = {
     "components.tab.bar.SortableTabContextMenu.switchToTerminalView": "Продолжить с терминальным агентом",
 }
 
+# Audit fixes: values Orca pins to English (literals, copyable templates) and
+# strings that had kept the Spanish word order of an untranslated source.
+FIXED = {
+    "auto.components.settings.TerminalPane.05efc0bada": "true",
+    "auto.components.settings.TerminalPane.348246b06f": "false",
+    "auto.components.right.sidebar.SourceControl.e64a632456": "main",
+    "auto.components.sidebar.AddRemoteHostDialog.pairingCodePlaceholder": "orca://pair?code=...",
+    "auto.components.settings.RuntimeEnvironmentsPane.c3d772c514": "orca://pair?code=...",
+    "auto.components.settings.RuntimeHostAccessForm.accessLinkPlaceholder": "orca://pair?code=...",
+    "auto.components.github.GitHubMarkdownComposer.f24783f470": "https://...",
+    "auto.components.settings.KagiSessionLinkForm.e383683485": "https://kagi.com/search?token=...",
+    "auto.components.settings.OpenAiTranscriptionKeyDialog.c3380e4ca5": "sk-...",
+    "auto.components.sidebar.AddRepoSteps.2ce3f6edf8": "/path/to/destination",
+    "auto.hooks.useSettingsNavigationMetadata.40d80bad8a": "Beta",
+    "auto.components.workspace.space.WorkspaceSpacePage.e8d6ba11ab": "Beta",
+    "auto.components.status.bar.WorkspaceSpaceCompactPanel.c361440dc0": "Beta",
+    "auto.components.skills.SkillsPage.b088e0785d": "Beta",
+    "auto.components.settings.MobileRelayBetaAvailability.beta": "Beta",
+
+    "auto.components.settings.BrowserUseSkillStep.459e24eebc": "Навык Browser Use",
+    "auto.components.settings.CliSection.6053cf736c": "Навык CLI",
+    "auto.components.settings.ComputerUsePane.93255aaf18": "Навык Computer Use",
+    "auto.components.settings.LinearAgentSkillPane.skillTitle": "Навык Linear",
+    "auto.components.settings.MobileEmulatorAgentControlRow.67e19ee03c": "Навык Orca CLI",
+    "auto.components.settings.TaskSourceLinearSetup.skillPanelTitle": "Навык Linear",
+    "auto.components.settings.general.search.327e3fa70d": "Orca CLI",
+    "auto.components.settings.mobile.emulator.search.d4b7833894": "Orca CLI",
+    "auto.components.github.github.rate.limit.display.01f7323e58": "GraphQL API",
+    "auto.components.github.github.rate.limit.display.c392c749a6": "REST API",
+    "auto.components.sidebar.AddRepoSteps.3d4acbe693": "Git URL",
+    "auto.components.skills.SkillInstallTargetFields.d628c416a2": "Git worktree",
+    "auto.components.skills.SkillInstallTargetFields.0c10a406fb": "WSL ·",
+    "auto.components.settings.CursorAccountsSection.source.desktop": "Cursor IDE",
+    "auto.components.settings.MobileRelayBetaAvailability.androidApk": "Android APK",
+    "auto.components.jira.connect.dialog.2849ddb295": "Эл. почта Atlassian",
+    "auto.components.settings.AccountsPane.bf160bb6c0": "Переопределение Group ID",
+    "auto.components.feature.wall.agents.orchestration.OrchestrationPage.childPr2Name": "PR 2/2: withSession middleware",
+    "workspace.links.kind.github_pr": "PR в GitHub",
+    "workspace.links.kind.gitlab_mr": "MR в GitLab",
+    "workspace.links.kind.bitbucket_pr": "PR в Bitbucket",
+    "workspace.links.kind.gitea_pr": "PR в Gitea",
+    "workspace.links.kind.azure_devops_pr": "PR в Azure DevOps",
+}
+
 
 def flat(obj, path="", out=None):
     out = {} if out is None else out
@@ -97,7 +141,8 @@ def check_placeholders(path, source, value):
 def main():
     ov = json.load(open(OV, encoding="utf-8"))
     source = dict(f.walk(json.load(open(SKELETON, encoding="utf-8"))))
-    source.update(json.load(open(EN_EXTRA, encoding="utf-8")))
+    en = dict(f.walk(json.load(open(SKELETON_EN, encoding="utf-8"))))
+    source.update({p: v for p, v in en.items() if p not in source})
     before = len(ov)
 
     for key in [k for k in ov if k not in source]:
@@ -114,10 +159,11 @@ def main():
 
     ov.update(added)
     ov.update(CHANGED)
+    ov.update(FIXED)
     json.dump(ov, open(OV, "w", encoding="utf-8"), ensure_ascii=False, indent=2, sort_keys=True)
     print(
         f"overrides: {before} -> {len(ov)} "
-        f"(+{len(added)} added, {len(CHANGED)} changed, -{removed} removed)"
+        f"(+{len(added)} added, {len(CHANGED)} changed, {len(FIXED)} fixed, -{removed} removed)"
     )
 
 
