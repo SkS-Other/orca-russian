@@ -15,6 +15,11 @@ try:
     done = set(json.load(open(os.path.join(HERE, "ru_overrides.json"), encoding="utf-8")).keys())
 except FileNotFoundError:
     done = set()
+try:
+    # Intentionally English values (brands, commands, code): nothing to translate.
+    done |= set(json.load(open(os.path.join(HERE, "_preserve_english.json"), encoding="utf-8")))
+except FileNotFoundError:
+    pass
 
 pending = [(p, v) for p, v in kept.items() if p.startswith(GROUP) and p not in done]
 print(f"# pending in '{GROUP}': {len(pending)} / showing {min(N, len(pending))}")
