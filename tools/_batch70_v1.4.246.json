@@ -1,0 +1,12 @@
+{
+  "auto.components.NativeChatResumeFailureGuidance.fallback": "Orca не смогла возобновить этот чат. Откройте его, чтобы продолжить вручную.",
+  "auto.components.NativeChatResumeFailureGuidance.unconfirmed": "Orca не смогла подтвердить, что сообщение «continue» доставлено. Откройте чат и проверьте его, прежде чем отправлять другое.",
+  "auto.components.skills.install.bundleVerificationFailed": "Установка не удалась: Orca не смогла проверить запрошенный пакет.",
+  "auto.components.skills.install.requestedVersionVerificationFailed": "Установка не удалась: Orca не смогла проверить запрошенную версию.",
+  "auto.components.terminal.pane.osc52.clipboard.failed.toast.fdd3e7e977": "Терминальное приложение запросило копию, но Orca не смогла подтвердить, что она попала в системный буфер обмена.",
+  "auto.lib.agent.skill.cli.prerequisite.windowsPathUnknown": "Orca не смогла проверить ваш пользовательский PATH в Windows",
+  "auto.lib.workspace.create.error.format.37cf0bc991": "Orca не смогла определить пригодную базовую ссылку для этого рабочего пространства.",
+  "auto.store.slices.worktrees.903b51c2ed": "Рабочее пространство создано из {{value0}}, но Orca не смогла сделать fast-forward локального {{value1}}. {{value2}}",
+  "auto.store.slices.worktrees.localBaseRefRefreshFailedDescriptionNamed": "Рабочее пространство «{{value0}}» создано из {{value1}}, но Orca не смогла сделать fast-forward локального {{value2}}. {{value3}}",
+  "components.agentSessionContinuation.deliveryUnconfirmed": "Orca не смогла подтвердить, что {{agent}} получил контекст сеанса. Проверьте новый сеанс и вставьте его сами, если поле ввода пусто."
+}

@@ -20,7 +20,7 @@ def main():
     ov = json.load(open(OV, encoding="utf-8"))
     before = len(ov)
 
-    dropped = sorted(k for k, v in ov.items() if en.get(k) == v)
+    dropped = sorted(k for k, v in ov.items() if en.get(k) == v or f.blocked(k))
     for key in dropped:
         del ov[key]
 

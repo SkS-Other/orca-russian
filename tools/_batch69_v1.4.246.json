@@ -1,0 +1,4 @@
+{
+  "auto.components.TaskPage.backToPullRequests": "PR",
+  "auto.components.TaskPage.gitlabViewMrs": "MR"
+}

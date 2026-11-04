@@ -53,6 +53,35 @@ def protected(path):
     rest = path[len(PROTECTED_ROOT):]
     return bool(PROTECTED_MODULE.match(rest))
 
+# Security and destructive-confirmation copy: the host ignores pack entries for
+# these paths (`isProtectedCopyPath`), so shipping them only wastes the entry
+# budget. Snapshot of protected-copy-keys.json, see the file's `source` field.
+PROTECTED_COPY_FILE = os.path.join(HERE, "_protected_copy.json")
+PLURAL_SUFFIX = re.compile(r"_(?:zero|one|two|few|many|other)$")
+try:
+    _protected_copy = json.load(open(PROTECTED_COPY_FILE, encoding="utf-8"))
+    PROTECTED_COPY_KEYS = frozenset(_protected_copy["keys"])
+    PROTECTED_COPY_PREFIXES = tuple(_protected_copy["prefixes"])
+except FileNotFoundError:
+    PROTECTED_COPY_KEYS = frozenset()
+    PROTECTED_COPY_PREFIXES = ()
+
+def protected_copy(path):
+    if any(path.startswith(prefix) for prefix in PROTECTED_COPY_PREFIXES):
+        return True
+    candidate = path
+    while candidate:
+        if candidate in PROTECTED_COPY_KEYS:
+            return True
+        if PLURAL_SUFFIX.sub("", candidate) in PROTECTED_COPY_KEYS:
+            return True
+        parent = candidate.rfind(".")
+        candidate = "" if parent == -1 else candidate[:parent]
+    return False
+
+def blocked(path):
+    return protected(path) or protected_copy(path)
+
 # A container is walkable only if an allowlist leaf sits below it.
 def container_exempt(path):
     prefix = path + "."
@@ -70,6 +99,8 @@ def walk(obj, path=""):
                     yield from walk(v, p)
                 else:
                     continue
+            elif protected_copy(p):
+                continue
             else:
                 yield from walk(v, p)
     else:
