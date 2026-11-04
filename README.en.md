@@ -1,5 +1,10 @@
 # Russian language pack for Orca
 
+> ⚠️ **This project is archived: the pack is no longer needed.** Since Orca **v1.4.244** Russian is
+> built into the app — **Settings → Appearance → Language → Русский**. Disable and remove this plugin,
+> otherwise it overrides the built-in translation (and lags behind it). The repository stays as
+> history: the last built version is v1.4.246.
+
 > 🌍 **Русская версия** → [README.md](README.md)
 
 Russian (ru) localization for the [Orca](https://github.com/stablyai/orca) UI. Untranslated keys fall back to the English source automatically.
